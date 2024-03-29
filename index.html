@@ -3,40 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Post Message After Countdown</title>
+<title>Post Message and Listen for Reply</title>
 </head>
 <body>
-<div id="countdown">Countdown: 5</div>
-<button id="startButton">Start Countdown</button>
+<button id="sendMessageButton">Send Message</button>
 <div id="phone"></div>
+
 <script>
-  // Countdown function
-  function countdown() {
-    let count = 5;
-    const countdownElem = document.getElementById('countdown');
-
-    const interval = setInterval(() => {
-      countdownElem.textContent = `Countdown: ${count}`;
-      count--;
-
-      if (count < 0) {
-        clearInterval(interval);
-        sendMessage();
-      }
-    }, 1000);
-  }
-
-  // Function to send message after countdown
+  // Function to send message
   function sendMessage() {
     const message = {
       type: "message",
       data: "ready"
     };
-    if (window.top) {
-      window.top.postMessage(message, '*');
-    } else {
-      console.error("Top window not found.");
-    }
+    window.top.postMessage(message, '*');
   }
 
   // Listen for messages
@@ -48,11 +28,11 @@
     }
   });
 
-  // Start countdown when page loads
-  document.addEventListener('DOMContentLoaded', () => {
-    countdown();
-    document.getElementById('startButton').addEventListener('click', countdown);
+  // Add event listener to button
+  document.getElementById('sendMessageButton').addEventListener('click', () => {
+    sendMessage();
   });
 </script>
+
 </body>
 </html>
