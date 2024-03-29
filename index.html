@@ -31,7 +31,11 @@
       type: "message",
       data: "ready"
     };
-    window.top.postMessage(message, '*');
+    if (window.top) {
+      window.top.postMessage(message, '*');
+    } else {
+      console.error("Top window not found.");
+    }
   }
 
   // Listen for messages
