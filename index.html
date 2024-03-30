@@ -1,38 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Post Message and Listen for Reply</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request data from webview</title>
 </head>
 <body>
-<button id="sendMessageButton">Send Message</button>
-<div id="phone"></div>
+<h1>Request data from webview</h1>
+
+<p>Data from webview: <span id="messageFromFlutter"></span></p>
+<button onclick="sendMessageToFlutter()">Request data from webview</button>
 
 <script>
-  // Function to send message
-  function sendMessage() {
-    const message = {
-      type: "message",
-      data: "ready"
-    };
-    window.top.postMessage(message, '*');
-  }
-
-  // Listen for messages
-  window.addEventListener('message', function(event) {
-    const message = event.data;
-    if (message.type === "message" && message.data && message.data.type === "auth") {
-      const phone = message.data.phone;
-      document.getElementById('phone').textContent = `Phone: ${phone}`;
+    // Function to receive messages from Flutter
+    function receiveMessageFromFlutter(message) {
+      document.getElementById('messageFromFlutter').innerText = message;
     }
-  });
 
-  // Add event listener to button
-  document.getElementById('sendMessageButton').addEventListener('click', () => {
-    sendMessage();
+    // Function to send a message to Flutter
+    function sendMessageToFlutter() {
+      var message = '{ "type": "message", "data": "ready" }';
+      messageHandler.postMessage(message);
+    }
+
+    // Request data as page loads
+    document.addEventListener('DOMContentLoaded', () => {
+    sendMessageToFlutter();
   });
 </script>
-
 </body>
 </html>
